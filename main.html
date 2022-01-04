@@ -1,0 +1,136 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+
+
+    <title>記帳系統</title>
+</head>
+
+<body>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+
+
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container-fluid">
+            <h2 class="navbar-brand-lg" style="color: rgb(245, 234, 203);">記帳系統</h2>
+        </div>
+
+    </nav>
+
+    <div class="container-fluid">
+        <div class="alert alert-secondary mt-3" role="alert">
+            <form>
+                <div class="container-fluid row align-content-center">
+                    <div class="col-2 mb-3">
+                        <select class="form-control" style="height: 40;" id="item_type">
+                            <option value="收入">收入</option>
+                            <option value="食物">食物</option>
+                            <option value="衣服">衣服</option>
+                            <option value="住宿">住宿</option>
+                            <option value="交通">交通</option>
+                            <option value="教育">教育</option>
+                            <option value="娛樂">娛樂</option>
+                        </select>
+                    </div>
+    
+                    <div class="input-group col-5 mb-3" style="height: 40;">
+                        <div class="input-group-prepend">
+                        </div>
+                        <input type="text" class="form-control" placeholder="請輸入名稱" aria-label="InputItem"
+                            aria-describedby="basic-addon1" id="item">
+                    </div>
+                    <div class="input-group col-4 mb-3" style="height: 40;">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text h-100" id="basic-addon1">$</span>
+                        </div>
+                        
+                        <input type="number" class="form-control" placeholder="請輸入金額" aria-label="InputPrice"
+                            aria-describedby="basic-addon1" id="price">
+                    </div>
+                    <button type="button" class="btn btn-dark  col-1 mb-3" id="add" style="height: 40;" onclick="item_add()" >加入</button>
+                </div>
+            </form>
+            
+        </div>
+
+        <p id="test"></p>
+
+
+
+        <div class="alert alert-danger mt-3" id="itemTable">
+            <div id="list"></div>
+            <table class="table table-striped" >
+                <thead>
+                    <tr>
+                        <th>日期</th>
+                        <th>類型</th>
+                        <th>名稱</th>
+                        <th>金額</th>
+                    </tr>
+                </thead>
+                <tbody id="itemBody">
+
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    
+
+    <script>
+        loadAll();
+
+        function item_add() {
+            var array = [
+                new Date().toLocaleDateString(),
+                document.getElementById("item_type").value,
+                document.getElementById("item").value,
+                document.getElementById ("price").value,
+            ];
+            var item_date = new Date(); 
+            localStorage.setItem(item_date, JSON.stringify(array));
+            alert("新增完成");
+
+
+            loadAll();
+            
+
+        }
+
+        function loadAll() {
+
+            if(localStorage.length > 0) {
+                    
+                    var result = "<tr>";
+                    for(var i=0; i<localStorage.length;i++) {
+                        var arrayKey = localStorage.key(i);
+                        
+                        var array = localStorage.getItem(arrayKey);
+                        array = JSON.parse(array);
+                        
+                    
+                        result += "<td>"+array[0]+"</td><td>"+array[1]+"</td><td>"+array[2]+"</td><td>"+array[3]+"</td>";
+                        result += "</tr>";
+                    }
+                    
+                    $("#itemBody").html(result);   
+                }
+
+        }
+
+    </script>
+</body>
+
+</html>
